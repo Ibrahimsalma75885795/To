@@ -102,6 +102,17 @@
     .edit-btn:hover {
       background-color: #0056b3;
     }
+
+    /* Styling for buttons to be side by side */
+    .task-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    span {
+      flex-grow: 1;
+    }
+
   </style>
 </head>
 <body>
@@ -137,7 +148,7 @@
       function addTodoItem(task, time) {
         const li = document.createElement('li');
         li.innerHTML = `<span>${task} at ${time}</span>
-          <div class="btn-group">
+          <div class="task-buttons">
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
           </div>`;
