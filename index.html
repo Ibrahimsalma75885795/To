@@ -100,6 +100,12 @@
 
     li.dark-mode {
       background-color: #444;
+      color: #fff;
+    }
+
+    li.light-mode {
+      background-color: #fff;
+      color: #000;
     }
 
     .btn-group {
@@ -183,7 +189,16 @@
         container.classList.toggle('dark-mode');
         header.classList.toggle('dark-mode');
         document.querySelectorAll('input').forEach(input => input.classList.toggle('dark-mode'));
-        document.querySelectorAll('li').forEach(li => li.classList.toggle('dark-mode'));
+        
+        document.querySelectorAll('li').forEach(li => {
+          if (body.classList.contains('dark-mode')) {
+            li.classList.remove('light-mode');
+            li.classList.add('dark-mode');
+          } else {
+            li.classList.remove('dark-mode');
+            li.classList.add('light-mode');
+          }
+        });
       });
 
       todoForm.addEventListener('submit', (e) => {
@@ -203,6 +218,14 @@
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
           </div>`;
+
+        // Set initial mode based on the current mode
+        if (body.classList.contains('dark-mode')) {
+          li.classList.add('dark-mode');
+        } else {
+          li.classList.add('light-mode');
+        }
+
         todoList.appendChild(li);
 
         const deleteButton = li.querySelector('.delete-btn');
