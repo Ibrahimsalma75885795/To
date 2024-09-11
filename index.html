@@ -76,7 +76,12 @@
       font-size: 16px;
     }
 
-    .delete-btn {
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .delete-btn, .edit-btn {
       background-color: #dc3545;
       color: #fff;
       border: none;
@@ -86,8 +91,16 @@
       transition: background-color 0.3s;
     }
 
+    .edit-btn {
+      background-color: #007bff;
+    }
+
     .delete-btn:hover {
       background-color: #c82333;
+    }
+
+    .edit-btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -124,12 +137,25 @@
 
       function addTodoItem(task, time) {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${task} at ${time}</span> <button class="delete-btn">Delete</button>`;
+        li.innerHTML = `<span>${task} at ${time}</span>
+          <div class="btn-group">
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+          </div>`;
         todoList.appendChild(li);
 
         const deleteButton = li.querySelector('.delete-btn');
         deleteButton.addEventListener('click', () => {
           li.remove();
+        });
+
+        const editButton = li.querySelector('.edit-btn');
+        editButton.addEventListener('click', () => {
+          const newTask = prompt('Edit your task:', task);
+          const newTime = prompt('Edit your time:', time);
+          if (newTask && newTime) {
+            li.querySelector('span').textContent = `${newTask} at ${newTime}`;
+          }
         });
       }
     });
