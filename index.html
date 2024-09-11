@@ -16,6 +16,12 @@
       height: 100vh;
       background-attachment: fixed;
       background-size: cover;
+      transition: background-color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: #fff;
     }
 
     .container {
@@ -25,12 +31,21 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       width: 300px;
       text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .container.dark-mode {
+      background: rgba(0, 0, 0, 0.9);
     }
 
     h1 {
       margin-bottom: 20px;
       color: #333;
       font-size: 24px;
+    }
+
+    h1.dark-mode {
+      color: #fff;
     }
 
     form {
@@ -44,6 +59,12 @@
       border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    input.dark-mode {
+      background-color: #555;
+      color: #fff;
     }
 
     button {
@@ -74,6 +95,11 @@
       padding: 10px;
       border-bottom: 1px solid #ddd;
       font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    li.dark-mode {
+      background-color: #444;
     }
 
     .btn-group {
@@ -103,7 +129,6 @@
       background-color: #0056b3;
     }
 
-    /* Styling for buttons to be side by side */
     .task-buttons {
       display: flex;
       gap: 5px;
@@ -113,14 +138,30 @@
       flex-grow: 1;
     }
 
+    .dark-mode-toggle {
+      margin-bottom: 20px;
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .dark-mode-toggle:hover {
+      background-color: #555;
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <h1>To-Do List</h1>
+    <button id="dark-mode-toggle" class="dark-mode-toggle">Toggle Dark Mode</button>
     <form id="todo-form">
       <input type="text" id="todo-input" placeholder="Enter your task" required>
-      <input type="time" id="todo-time" required>
+      <input type="time" id="todo-time" placeholder="Optional time">
       <button type="submit">Add</button>
     </form>
     <ul id="todo-list"></ul>
@@ -131,23 +172,33 @@
       const todoInput = document.getElementById('todo-input');
       const todoTime = document.getElementById('todo-time');
       const todoList = document.getElementById('todo-list');
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      const body = document.body;
+      const container = document.querySelector('.container');
+      const header = document.querySelector('h1');
+
+      // Dark mode toggle functionality
+      darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        container.classList.toggle('dark-mode');
+        header.classList.toggle('dark-mode');
+        document.querySelectorAll('input').forEach(input => input.classList.toggle('dark-mode'));
+        document.querySelectorAll('li').forEach(li => li.classList.toggle('dark-mode'));
+      });
 
       todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const task = todoInput.value.trim();
         const time = todoTime.value.trim();
-        if (task && time) {
-          addTodoItem(task, time);
-          todoInput.value = '';
-          todoTime.value = '';
-        } else {
-          alert('Please enter both a task and a time.');
-        }
+        addTodoItem(task, time);
+        todoInput.value = '';
+        todoTime.value = '';
       });
 
       function addTodoItem(task, time) {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${task} at ${time}</span>
+        const timeDisplay = time ? ` at ${time}` : ''; // Show time only if provided
+        li.innerHTML = `<span>${task}${timeDisplay}</span>
           <div class="task-buttons">
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
@@ -163,8 +214,8 @@
         editButton.addEventListener('click', () => {
           const newTask = prompt('Edit your task:', task);
           const newTime = prompt('Edit your time:', time);
-          if (newTask && newTime) {
-            li.querySelector('span').textContent = `${newTask} at ${newTime}`;
+          if (newTask && newTime !== null) {
+            li.querySelector('span').textContent = `${newTask}${newTime ? ' at ' + newTime : ''}`;
           }
         });
       }
